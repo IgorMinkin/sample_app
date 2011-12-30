@@ -56,4 +56,20 @@ describe "Users" do
     end
   end
   
+  describe "user management" do
+    
+    it "should not display delete link for non-admin user" do
+      user = Factory(:user)
+      integration_sign_in(user)
+      visit users_path
+      response.should_not have_selector("a", :content => "delete")
+    end
+    
+    it "should display delete link for admin user" do
+      user = Factory(:user, :admin => true)
+      integration_sign_in(user)
+      visit users_path
+      response.should have_selector("a", :content => "delete")
+    end
+  end
 end
